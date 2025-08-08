@@ -10,7 +10,6 @@ const userSchema = z.object({
     email: z.email(),
     name: z.string().min(3),
     password: z.string().min(8),
-    role: z.enum(["USER", "ADMIN"])
 });
 
 const loginSchema = z.object({
@@ -39,7 +38,7 @@ export const registerUser = async (req: Request, res : Response) => {
                 name : data.name,
                 email : data.email,
                 password : hashedPassword,
-                role: data.role || 'USER',
+                role: 'USER',
             }
         });
 
