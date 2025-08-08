@@ -1,46 +1,47 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { registerUser } from "@/services/auth";
+import { loginUser } from "@/services/auth";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const registerSchema = yup.object({
-  name: yup
-    .string()
-    .min(3, "Name must contain 3 characters")
-    .required("Name is required"),
+const loginSchema = yup.object({
   email: yup
     .string()
     .email("Invalid email format")
     .required("Email is required"),
-  password: yup
-    .string()
-    .min(8, "Password must contain 8 characters")
-    .required("Password is required"),
+  password: yup.string().required("Password is required"),
 });
 
-type RegisterFormData = yup.InferType<typeof registerSchema>;
+interface LoginData {
+  email: string;
+  password: string;
+}
 
-const RegisterForm = () => {
+const LoginForm = () => {
+  const router = useRouter();
+  const [error, setError] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
-  } = useForm<RegisterFormData>({
-    resolver: yupResolver(registerSchema),
+    reset,
+  } = useForm<LoginData>({
+    resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const onSubmit = async (data : LoginData) =>{
     try {
-      const res = await registerUser(data);
-      console.log("User Registered", res);
-    } catch (error) {
-      console.error("Error registering user:", error);
+        const res = await loginUser(data);
+        console.log("Login Successfull", res);
+        router.push("/");   
+    } catch (error : any) {
+        setError(error.response?.data?.message || "Login failed");
     }
-  };
+  }
 
   return (
     <div className="min-h-screen w-[50%] flex items-center justify-center">
@@ -50,19 +51,6 @@ const RegisterForm = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div>
-            <label className="block mb-1 font-medium text-gray-700">Name</label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              {...register("name")}
-            />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
-            )}
-          </div>
-
           <div>
             <label className="block mb-1 font-medium text-gray-700">
               Email
@@ -102,14 +90,15 @@ const RegisterForm = () => {
             disabled={isSubmitting}
             className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-md"
           >
-            {isSubmitting ? "Registering..." : "Create Account"}
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </form>
+        {error && <p className="text-red-500 mb-3">{error}</p>}
 
         <p className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link href="/login" className="text-indigo-600 hover:underline">
-            Sign in
+          Don't have an account?{" "}
+          <Link href="/register" className="text-indigo-600 hover:underline">
+            Register
           </Link>
         </p>
       </div>
@@ -117,4 +106,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

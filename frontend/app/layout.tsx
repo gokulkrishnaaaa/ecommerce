@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Ecommerce",
-  description: "Ecommerce frontend",
+  title: "ShopEase",
+  description: "",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
