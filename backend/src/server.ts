@@ -1,8 +1,8 @@
 import express, {Application, Request, Response } from 'express';
 import dotenv from "dotenv";
 import cors from "cors";
-import { PrismaClient } from '@prisma/client';
 import user from "./routes/user";
+import product from "./routes/product";
 
 dotenv.config();
 
@@ -14,6 +14,8 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use("/api/user", user);
+app.use("/api/product", product);
+
 
 app.get('/', (req: Request, res: Response) =>{
     res.send("Backend API is running...")
