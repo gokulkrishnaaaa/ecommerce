@@ -36,6 +36,9 @@ const LoginForm = () => {
   const onSubmit = async (data : LoginData) =>{
     try {
         const res = await loginUser(data);
+        if(res?.token){
+            localStorage.setItem("token", res.token);
+        }
         console.log("Login Successfull", res);
         router.push("/");   
     } catch (error : any) {
