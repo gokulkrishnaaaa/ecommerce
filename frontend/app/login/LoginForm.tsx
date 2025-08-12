@@ -40,7 +40,7 @@ const LoginForm = () => {
             localStorage.setItem("token", res.token);
         }
         console.log("Login Successfull", res);
-        router.push("/");   
+        router.push("/dashboard");   
     } catch (error : any) {
         setError(error.response?.data?.message || "Login failed");
     }
@@ -91,7 +91,7 @@ const LoginForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-md"
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-md cursor-pointer"
           >
             {isSubmitting ? "Logging in..." : "Login"}
           </button>

@@ -100,7 +100,7 @@ const RegisterForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-md"
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition duration-200 shadow-md cursor-pointer"
           >
             {isSubmitting ? "Registering..." : "Create Account"}
           </button>
